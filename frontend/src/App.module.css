@@ -142,3 +142,45 @@
 .emptyState p {
   margin: 0;
 }
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px;
+  }
+
+  .canvas {
+    min-height: min(55vh, 520px);
+  }
+
+  .textarea {
+    min-height: 160px;
+  }
+
+  .emptyState {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .headerTop {
+    flex-wrap: wrap;
+  }
+
+  .header h1 {
+    font-size: 1.15rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .canvas {
+    min-height: 360px;
+  }
+}
