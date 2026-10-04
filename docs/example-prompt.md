@@ -1,6 +1,6 @@
 # Beispiel-Prompt
 
-Kopiere den Text unten ins Eingabefeld (oder klicke in der App auf **Beispiel laden**) und starte **Generate**.
+Kopiere den Text unten ins Eingabefeld (oder klicke in der App auf **Beispiel laden**) und starte **Diagramm erstellen**.
 
 ## Bestellanforderung mit Freigaben
 

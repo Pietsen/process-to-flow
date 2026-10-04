@@ -47,7 +47,7 @@ export default function App() {
       setResult(parsed);
     } catch (err) {
       setResult(null);
-      setError(err instanceof Error ? err.message : 'Failed to generate process');
+      setError(err instanceof Error ? err.message : 'Diagramm konnte nicht erstellt werden.');
     } finally {
       setLoading(false);
     }
@@ -58,11 +58,13 @@ export default function App() {
       <aside className={styles.sidebar}>
         <header className={styles.header}>
           <h1>Process-to-Flow</h1>
-          <p>Describe a business process in plain language and visualize it as a flow diagram.</p>
+          <p>
+            Prozess in natürlicher Sprache beschreiben und als Flow-Diagramm darstellen.
+          </p>
         </header>
 
         <label className={styles.label} htmlFor="description">
-          Process description
+          Prozessbeschreibung
         </label>
         <textarea
           id="description"
@@ -88,7 +90,7 @@ export default function App() {
             onClick={onGenerate}
             disabled={loading || description.trim().length === 0}
           >
-            {loading ? 'Generating…' : 'Generate'}
+            {loading ? 'Erstelle…' : 'Diagramm erstellen'}
           </button>
         </div>
 
@@ -115,7 +117,7 @@ export default function App() {
               ))}
             </div>
             <div className={styles.summary}>
-              <h2>Actors</h2>
+              <h2>Akteure</h2>
               <ul>
                 {result.actors.map((actor) => (
                   <li key={actor}>{actor}</li>
@@ -129,15 +131,15 @@ export default function App() {
       <main className={styles.canvas}>
         {!result && !loading && !error && (
           <div className={styles.emptyState}>
-            <h2>No diagram yet</h2>
-            <p>Enter a process description and click Generate.</p>
+            <h2>Noch kein Diagramm</h2>
+            <p>Prozessbeschreibung eingeben und „Diagramm erstellen“ wählen.</p>
           </div>
         )}
 
         {loading && (
           <div className={styles.emptyState}>
-            <h2>Generating flow…</h2>
-            <p>The LLM is parsing your process description.</p>
+            <h2>Diagramm wird erstellt…</h2>
+            <p>Die KI strukturiert deinen Prozess.</p>
           </div>
         )}
 
