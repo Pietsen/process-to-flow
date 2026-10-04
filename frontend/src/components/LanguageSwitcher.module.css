@@ -1,0 +1,27 @@
+.switcher {
+  display: flex;
+  flex-shrink: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.button,
+.buttonActive {
+  border: none;
+  padding: 6px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.button {
+  background: #ffffff;
+  color: #334155;
+}
+
+.buttonActive {
+  background: #2563eb;
+  color: #ffffff;
+}

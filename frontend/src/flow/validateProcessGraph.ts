@@ -1,15 +1,20 @@
 import type { Edge } from '@xyflow/react';
 import type { ProcessResult } from '../types';
 
+export interface GraphIssue {
+  key: string;
+  params?: Record<string, string>;
+}
+
 export interface GraphValidation {
   ok: boolean;
-  errors: string[];
-  warnings: string[];
+  errors: GraphIssue[];
+  warnings: GraphIssue[];
 }
 
 export function validateProcessGraph(result: ProcessResult, edges: Edge[]): GraphValidation {
-  const errors: string[] = [];
-  const warnings: string[] = [];
+  const errors: GraphIssue[] = [];
+  const warnings: GraphIssue[] = [];
 
   const nodeIds = new Set([
     ...result.steps.map((step) => step.id),
@@ -18,22 +23,37 @@ export function validateProcessGraph(result: ProcessResult, edges: Edge[]): Grap
 
   for (const decision of result.decisions) {
     if (!nodeIds.has(decision.yesBranch)) {
-      errors.push(`Entscheidung „${decision.label}“: Ja-Zweig „${decision.yesBranch}“ existiert nicht.`);
+      errors.push({
+        key: 'graphCheck.decisionYesBranchMissing',
+        params: { label: decision.label, branch: decision.yesBranch },
+      });
     }
     if (!nodeIds.has(decision.noBranch)) {
-      errors.push(`Entscheidung „${decision.label}“: Nein-Zweig „${decision.noBranch}“ existiert nicht.`);
+      errors.push({
+        key: 'graphCheck.decisionNoBranchMissing',
+        params: { label: decision.label, branch: decision.noBranch },
+      });
     }
     if (decision.yesBranch === decision.noBranch) {
-      errors.push(`Entscheidung „${decision.label}“: Ja- und Nein-Zweig sind identisch.`);
+      errors.push({
+        key: 'graphCheck.decisionSameBranches',
+        params: { label: decision.label },
+      });
     }
   }
 
   for (const edge of edges) {
     if (!nodeIds.has(edge.source)) {
-      errors.push(`Kante „${edge.id}“: Quelle „${edge.source}“ fehlt.`);
+      errors.push({
+        key: 'graphCheck.edgeSourceMissing',
+        params: { edgeId: edge.id, nodeId: edge.source },
+      });
     }
     if (!nodeIds.has(edge.target)) {
-      errors.push(`Kante „${edge.id}“: Ziel „${edge.target}“ fehlt.`);
+      errors.push({
+        key: 'graphCheck.edgeTargetMissing',
+        params: { edgeId: edge.id, nodeId: edge.target },
+      });
     }
   }
 
@@ -49,18 +69,24 @@ export function validateProcessGraph(result: ProcessResult, edges: Edge[]): Grap
 
   for (const step of result.steps) {
     if (!connected.has(step.id)) {
-      warnings.push(`Schritt „${step.label}“ (${step.id}) ist nicht mit dem Graphen verbunden.`);
+      warnings.push({
+        key: 'graphCheck.stepDisconnected',
+        params: { label: step.label, id: step.id },
+      });
     }
   }
 
   for (const decision of result.decisions) {
     if (!connected.has(decision.id)) {
-      warnings.push(`Entscheidung „${decision.label}“ (${decision.id}) ist nicht mit dem Graphen verbunden.`);
+      warnings.push({
+        key: 'graphCheck.decisionDisconnected',
+        params: { label: decision.label, id: decision.id },
+      });
     }
   }
 
   if (result.steps.length === 0) {
-    warnings.push('Keine Schritte im LLM-Output.');
+    warnings.push({ key: 'graphCheck.noSteps' });
   }
 
   return {

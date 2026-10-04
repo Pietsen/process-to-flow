@@ -1,10 +1,13 @@
 import type { Edge, Node } from '@xyflow/react';
 import type { ProcessResult } from '../types';
 import { actorColor } from '../utils/actorColor';
-import { buildFlowEdges } from './buildFlowEdges';
+import { buildFlowEdges, type BranchLabels } from './buildFlowEdges';
 import { layoutGraph } from './layoutGraph';
 
-export function buildFlowGraph(result: ProcessResult): { nodes: Node[]; edges: Edge[] } {
+export function buildFlowGraph(
+  result: ProcessResult,
+  branchLabels?: BranchLabels,
+): { nodes: Node[]; edges: Edge[] } {
   const nodes: Node[] = [
     ...result.steps.map((step) => ({
       id: step.id,
@@ -20,7 +23,7 @@ export function buildFlowGraph(result: ProcessResult): { nodes: Node[]; edges: E
     })),
   ];
 
-  const edges = buildFlowEdges(result);
+  const edges = buildFlowEdges(result, branchLabels);
   const layoutNodes = layoutGraph(nodes, edges);
 
   return { nodes: layoutNodes, edges };

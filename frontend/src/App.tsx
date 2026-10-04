@@ -8,14 +8,15 @@ import {
   type Node,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { useTranslation } from 'react-i18next';
 
+import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { generateProcess } from './api';
 import { buildFlowGraph } from './flow/buildFlowGraph';
 import { buildFlowEdges } from './flow/buildFlowEdges';
-import { validateProcessGraph } from './flow/validateProcessGraph';
+import { validateProcessGraph, type GraphIssue } from './flow/validateProcessGraph';
 import { DecisionNode } from './nodes/DecisionNode';
 import { TaskNode } from './nodes/TaskNode';
-import { EXAMPLE_PROCESS_PROMPT } from './examplePrompt';
 import type { ProcessResult } from './types';
 import styles from './App.module.css';
 
@@ -24,20 +25,33 @@ const nodeTypes = {
   decision: DecisionNode,
 };
 
+function formatIssue(issue: GraphIssue, translate: (key: string, params?: Record<string, string>) => string) {
+  return translate(issue.key, issue.params);
+}
+
 export default function App() {
+  const { t, i18n } = useTranslation();
   const [description, setDescription] = useState('');
   const [result, setResult] = useState<ProcessResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const graph = useMemo(() => (result ? buildFlowGraph(result) : { nodes: [], edges: [] }), [result]);
+  const branchLabels = useMemo(
+    () => ({ yes: t('flow.yes'), no: t('flow.no') }),
+    [t, i18n.language],
+  );
+
+  const graph = useMemo(
+    () => (result ? buildFlowGraph(result, branchLabels) : { nodes: [], edges: [] }),
+    [result, branchLabels],
+  );
 
   const validation = useMemo(() => {
     if (!result) {
       return null;
     }
-    return validateProcessGraph(result, buildFlowEdges(result));
-  }, [result]);
+    return validateProcessGraph(result, buildFlowEdges(result, branchLabels));
+  }, [result, branchLabels]);
 
   const onGenerate = useCallback(async () => {
     setLoading(true);
@@ -47,29 +61,34 @@ export default function App() {
       setResult(parsed);
     } catch (err) {
       setResult(null);
-      setError(err instanceof Error ? err.message : 'Diagramm konnte nicht erstellt werden.');
+      setError(err instanceof Error ? err.message : t('errors.generateFailed'));
     } finally {
       setLoading(false);
     }
-  }, [description]);
+  }, [description, t]);
+
+  const onLoadExample = useCallback(() => {
+    setDescription(t('examplePrompt'));
+  }, [t]);
 
   return (
     <div className={styles.layout}>
       <aside className={styles.sidebar}>
         <header className={styles.header}>
-          <h1>Process-to-Flow</h1>
-          <p>
-            Prozess in natürlicher Sprache beschreiben und als Flow-Diagramm darstellen.
-          </p>
+          <div className={styles.headerTop}>
+            <h1>{t('app.title')}</h1>
+            <LanguageSwitcher />
+          </div>
+          <p>{t('app.tagline')}</p>
         </header>
 
         <label className={styles.label} htmlFor="description">
-          Prozessbeschreibung
+          {t('form.descriptionLabel')}
         </label>
         <textarea
           id="description"
           className={styles.textarea}
-          placeholder="Beschreibe den Ablauf in natürlicher Sprache (Akteure, Schritte, Wenn-dann-Entscheidungen)…"
+          placeholder={t('form.descriptionPlaceholder')}
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           rows={14}
@@ -79,10 +98,10 @@ export default function App() {
           <button
             type="button"
             className={styles.buttonSecondary}
-            onClick={() => setDescription(EXAMPLE_PROCESS_PROMPT)}
+            onClick={onLoadExample}
             disabled={loading}
           >
-            Beispiel laden
+            {t('form.loadExample')}
           </button>
           <button
             type="button"
@@ -90,34 +109,38 @@ export default function App() {
             onClick={onGenerate}
             disabled={loading || description.trim().length === 0}
           >
-            {loading ? 'Erstelle…' : 'Diagramm erstellen'}
+            {loading ? t('form.generating') : t('form.generate')}
           </button>
         </div>
 
         {error && <p className={styles.error}>{error}</p>}
 
-        {result && (
+        {result && validation && (
           <>
             <div className={styles.summary}>
-              <h2>Graph-Check</h2>
-              {validation?.ok ? (
-                <p className={styles.checkOk}>Struktur ok{validation.warnings.length ? ' (mit Hinweisen)' : ''}.</p>
+              <h2>{t('graphCheck.title')}</h2>
+              {validation.ok ? (
+                <p className={styles.checkOk}>
+                  {validation.warnings.length > 0
+                    ? t('graphCheck.okWithWarnings')
+                    : t('graphCheck.ok')}
+                </p>
               ) : (
-                <p className={styles.checkError}>Struktur fehlerhaft — Diagramm kann unübersichtlich sein.</p>
+                <p className={styles.checkError}>{t('graphCheck.invalid')}</p>
               )}
-              {validation?.errors.map((item) => (
-                <p key={item} className={styles.checkError}>
-                  {item}
+              {validation.errors.map((item) => (
+                <p key={`${item.key}-${JSON.stringify(item.params)}`} className={styles.checkError}>
+                  {formatIssue(item, t)}
                 </p>
               ))}
-              {validation?.warnings.map((item) => (
-                <p key={item} className={styles.checkWarn}>
-                  {item}
+              {validation.warnings.map((item) => (
+                <p key={`${item.key}-${JSON.stringify(item.params)}`} className={styles.checkWarn}>
+                  {formatIssue(item, t)}
                 </p>
               ))}
             </div>
             <div className={styles.summary}>
-              <h2>Akteure</h2>
+              <h2>{t('actors.title')}</h2>
               <ul>
                 {result.actors.map((actor) => (
                   <li key={actor}>{actor}</li>
@@ -131,15 +154,15 @@ export default function App() {
       <main className={styles.canvas}>
         {!result && !loading && !error && (
           <div className={styles.emptyState}>
-            <h2>Noch kein Diagramm</h2>
-            <p>Prozessbeschreibung eingeben und „Diagramm erstellen“ wählen.</p>
+            <h2>{t('canvas.emptyTitle')}</h2>
+            <p>{t('canvas.emptyHint')}</p>
           </div>
         )}
 
         {loading && (
           <div className={styles.emptyState}>
-            <h2>Diagramm wird erstellt…</h2>
-            <p>Die KI strukturiert deinen Prozess.</p>
+            <h2>{t('canvas.loadingTitle')}</h2>
+            <p>{t('canvas.loadingHint')}</p>
           </div>
         )}
 

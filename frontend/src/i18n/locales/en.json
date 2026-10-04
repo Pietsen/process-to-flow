@@ -1,0 +1,49 @@
+{
+  "app": {
+    "title": "Process-to-Flow",
+    "tagline": "Describe a business process in plain language and visualize it as a flow diagram."
+  },
+  "language": {
+    "label": "Language",
+    "de": "DE",
+    "en": "EN"
+  },
+  "form": {
+    "descriptionLabel": "Process description",
+    "descriptionPlaceholder": "Describe the flow in natural language (actors, steps, if-then decisions)…",
+    "loadExample": "Load example",
+    "generate": "Generate diagram",
+    "generating": "Generating…"
+  },
+  "errors": {
+    "generateFailed": "Could not generate the diagram."
+  },
+  "graphCheck": {
+    "title": "Graph check",
+    "ok": "Structure looks valid.",
+    "okWithWarnings": "Structure looks valid (with notes).",
+    "invalid": "Structure issues — the diagram may be hard to read.",
+    "decisionYesBranchMissing": "Decision \"{{label}}\": yes branch \"{{branch}}\" does not exist.",
+    "decisionNoBranchMissing": "Decision \"{{label}}\": no branch \"{{branch}}\" does not exist.",
+    "decisionSameBranches": "Decision \"{{label}}\": yes and no branch are the same.",
+    "edgeSourceMissing": "Edge \"{{edgeId}}\": source \"{{nodeId}}\" is missing.",
+    "edgeTargetMissing": "Edge \"{{edgeId}}\": target \"{{nodeId}}\" is missing.",
+    "stepDisconnected": "Step \"{{label}}\" ({{id}}) is not connected to the graph.",
+    "decisionDisconnected": "Decision \"{{label}}\" ({{id}}) is not connected to the graph.",
+    "noSteps": "No steps in the LLM response."
+  },
+  "actors": {
+    "title": "Actors"
+  },
+  "canvas": {
+    "emptyTitle": "No diagram yet",
+    "emptyHint": "Enter a process description and choose \"Generate diagram\".",
+    "loadingTitle": "Generating diagram…",
+    "loadingHint": "The model is structuring your process."
+  },
+  "flow": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "examplePrompt": "An employee submits a purchase request in the portal with justification and a cost estimate. The manager reviews the request within two business days.\n\nIf the manager approves, they forward the case to procurement. Procurement obtains at least two quotes and selects a vendor. If the total amount exceeds 10,000 euros, executive management must approve as well. After approval, procurement creates the purchase order and notifies the employee by email.\n\nIf the manager rejects the request, the employee receives a notification with the reason and may revise and resubmit the request.\n\nAfter goods are shipped, inbound inspection confirms receipt in the system. If the delivery matches the order, accounting closes the case. If quantity or items differ, inbound inspection escalates to procurement to clarify with the vendor."
+}

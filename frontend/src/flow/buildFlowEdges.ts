@@ -1,7 +1,15 @@
 import type { Edge } from '@xyflow/react';
 import type { ProcessResult } from '../types';
 
-export function buildFlowEdges(result: ProcessResult): Edge[] {
+export interface BranchLabels {
+  yes: string;
+  no: string;
+}
+
+export function buildFlowEdges(
+  result: ProcessResult,
+  branchLabels: BranchLabels = { yes: 'Yes', no: 'No' },
+): Edge[] {
   const edges: Edge[] = [];
   const branchTargets = new Set<string>();
 
@@ -41,7 +49,7 @@ export function buildFlowEdges(result: ProcessResult): Edge[] {
         source: decision.id,
         sourceHandle: 'yes',
         target: decision.yesBranch,
-        label: 'Ja',
+        label: branchLabels.yes,
         type: 'smoothstep',
       },
       {
@@ -49,7 +57,7 @@ export function buildFlowEdges(result: ProcessResult): Edge[] {
         source: decision.id,
         sourceHandle: 'no',
         target: decision.noBranch,
-        label: 'Nein',
+        label: branchLabels.no,
         type: 'smoothstep',
       },
     );

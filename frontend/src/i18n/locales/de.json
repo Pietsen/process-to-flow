@@ -1,0 +1,49 @@
+{
+  "app": {
+    "title": "Process-to-Flow",
+    "tagline": "Prozess in natürlicher Sprache beschreiben und als Flow-Diagramm darstellen."
+  },
+  "language": {
+    "label": "Sprache",
+    "de": "DE",
+    "en": "EN"
+  },
+  "form": {
+    "descriptionLabel": "Prozessbeschreibung",
+    "descriptionPlaceholder": "Beschreibe den Ablauf in natürlicher Sprache (Akteure, Schritte, Wenn-dann-Entscheidungen)…",
+    "loadExample": "Beispiel laden",
+    "generate": "Diagramm erstellen",
+    "generating": "Erstelle…"
+  },
+  "errors": {
+    "generateFailed": "Diagramm konnte nicht erstellt werden."
+  },
+  "graphCheck": {
+    "title": "Graph-Check",
+    "ok": "Struktur ok.",
+    "okWithWarnings": "Struktur ok (mit Hinweisen).",
+    "invalid": "Struktur fehlerhaft — Diagramm kann unübersichtlich sein.",
+    "decisionYesBranchMissing": "Entscheidung „{{label}}“: Ja-Zweig „{{branch}}“ existiert nicht.",
+    "decisionNoBranchMissing": "Entscheidung „{{label}}“: Nein-Zweig „{{branch}}“ existiert nicht.",
+    "decisionSameBranches": "Entscheidung „{{label}}“: Ja- und Nein-Zweig sind identisch.",
+    "edgeSourceMissing": "Kante „{{edgeId}}“: Quelle „{{nodeId}}“ fehlt.",
+    "edgeTargetMissing": "Kante „{{edgeId}}“: Ziel „{{nodeId}}“ fehlt.",
+    "stepDisconnected": "Schritt „{{label}}“ ({{id}}) ist nicht mit dem Graphen verbunden.",
+    "decisionDisconnected": "Entscheidung „{{label}}“ ({{id}}) ist nicht mit dem Graphen verbunden.",
+    "noSteps": "Keine Schritte im LLM-Output."
+  },
+  "actors": {
+    "title": "Akteure"
+  },
+  "canvas": {
+    "emptyTitle": "Noch kein Diagramm",
+    "emptyHint": "Prozessbeschreibung eingeben und „Diagramm erstellen“ wählen.",
+    "loadingTitle": "Diagramm wird erstellt…",
+    "loadingHint": "Die KI strukturiert deinen Prozess."
+  },
+  "flow": {
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "examplePrompt": "Ein Mitarbeiter stellt eine Bestellanforderung im Portal ein und hängt die Begründung sowie eine Kostenschätzung an. Der Vorgesetzte prüft die Anforderung innerhalb von zwei Werktagen.\n\nWenn der Vorgesetzte genehmigt, leitet er den Vorgang an den Einkauf weiter. Der Einkauf holt mindestens zwei Angebote ein und wählt einen Lieferanten aus. Liegt der Gesamtbetrag über 10.000 Euro, muss zusätzlich die Geschäftsleitung freigeben. Nach erfolgreicher Freigabe erstellt der Einkauf die Bestellung und informiert den Mitarbeiter per E-Mail.\n\nWenn der Vorgesetzte ablehnt, erhält der Mitarbeiter eine Benachrichtigung mit Begründung und kann die Anforderung überarbeiten und erneut einreichen.\n\nNach Versand der Ware bestätigt die Wareneingangskontrolle den Empfang im System. Stimmt die Lieferung mit der Bestellung überein, schließt die Buchhaltung den Vorgang ab. Weichen Menge oder Artikel ab, eskaliert die Wareneingangskontrolle an den Einkauf zur Klärung mit dem Lieferanten."
+}
