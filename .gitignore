@@ -1,0 +1,50 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Java / Maven
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+*.class
+*.jar
+*.war
+*.log
+hs_err_pid*
+replay_pid*
+
+# Node / pnpm / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/package-lock.json
+frontend/npm-debug.log*
+frontend/.pnpm-debug.log*
+pnpm-debug.log*
+node_modules/
+
+# Test / coverage
+frontend/coverage/
+*.lcov
+
+# Vite / TypeScript
+*.tsbuildinfo
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker / local overrides
+docker-compose.override.yml

@@ -1,0 +1,19 @@
+# https://render.com/docs/blueprint-spec
+# One public URL: UI + /api on the same host (HR testers need only the link).
+services:
+  - type: web
+    name: process-to-flow
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/processes
+    envVars:
+      - key: LLM_PROVIDER
+        value: openai
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: PORT
+        value: "10000"
