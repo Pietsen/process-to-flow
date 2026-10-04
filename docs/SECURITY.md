@@ -33,7 +33,7 @@ On Render, clients are identified via `X-Forwarded-For`.
 Before calling the LLM, `POST /api/process` runs a **heuristic guard** on the description:
 
 - Max length (`PROMPT_MAX_LENGTH`, default `8000`)
-- Blocks common instruction-override / exfiltration phrases (e.g. “ignore previous instructions”, “reveal system prompt”, API key patterns)
+- Blocks common instruction-override / exfiltration phrases in **English and German** (e.g. “ignore previous instructions”, “Ignoriere alle vorherigen Anweisungen”, API key / API-Schlüssel patterns)
 
 Rejected input → HTTP **400** with `{ "code": "prompt_rejected", ... }`.
 
