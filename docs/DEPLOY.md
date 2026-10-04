@@ -29,5 +29,11 @@ Build from the root **`Dockerfile`**, expose the platform `PORT`, inject `OPENAI
 
 ## Security notes
 
-- Never commit API keys; use platform secrets only.
-- Public URL without auth → set OpenAI usage limits; consider rate limiting for production use.
+See **[SECURITY.md](./SECURITY.md)** (OpenAI budgets, rate limits, rotation).
+
+On Render, tune for a public demo:
+
+```env
+RATE_LIMIT_PER_MINUTE=5
+RATE_LIMIT_PER_DAY=100
+```

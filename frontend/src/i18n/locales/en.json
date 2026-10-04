@@ -16,7 +16,9 @@
     "generating": "Generating…"
   },
   "errors": {
-    "generateFailed": "Could not generate the diagram."
+    "generateFailed": "Could not generate the diagram.",
+    "rateLimited": "Too many requests — please wait a moment and try again.",
+    "promptRejected": "The description contains disallowed instructions. Please describe only the business process."
   },
   "graphCheck": {
     "title": "Graph check",

@@ -11,7 +11,7 @@ import '@xyflow/react/dist/style.css';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher } from './components/LanguageSwitcher';
-import { generateProcess } from './api';
+import { ApiError, generateProcess } from './api';
 import { buildFlowGraph } from './flow/buildFlowGraph';
 import { buildFlowEdges } from './flow/buildFlowEdges';
 import { validateProcessGraph, type GraphIssue } from './flow/validateProcessGraph';
@@ -61,7 +61,13 @@ export default function App() {
       setResult(parsed);
     } catch (err) {
       setResult(null);
-      setError(err instanceof Error ? err.message : t('errors.generateFailed'));
+      if (err instanceof ApiError && err.code === 'rate_limited') {
+        setError(t('errors.rateLimited'));
+      } else if (err instanceof ApiError && err.code === 'prompt_rejected') {
+        setError(t('errors.promptRejected'));
+      } else {
+        setError(err instanceof Error ? err.message : t('errors.generateFailed'));
+      }
     } finally {
       setLoading(false);
     }

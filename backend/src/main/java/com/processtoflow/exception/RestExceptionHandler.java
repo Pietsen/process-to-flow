@@ -18,6 +18,12 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(new ApiError("bad_request", exception.getMessage()));
     }
 
+    @ExceptionHandler(PromptRejectedException.class)
+    public ResponseEntity<ApiError> handlePromptRejected(PromptRejectedException exception) {
+        log.warn("Rejected process description: {}", exception.getMessage());
+        return ResponseEntity.badRequest().body(new ApiError("prompt_rejected", exception.getMessage()));
+    }
+
     @ExceptionHandler(NonTransientAiException.class)
     public ResponseEntity<ApiError> handleNonTransientAi(NonTransientAiException exception) {
         LlmErrorMapper.MappedError mapped = LlmErrorMapper.map(exception);

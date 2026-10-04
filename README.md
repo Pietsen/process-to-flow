@@ -15,7 +15,7 @@ Natural-language business process descriptions → interactive flow diagrams (Sp
 2. An LLM parses the text into structured steps and decisions.
 3. The UI renders a flow diagram with tasks and decision nodes.
 
-Portfolio prototype — in-memory storage, no authentication.
+Portfolio prototype — in-memory storage, no login; rate limits on `POST /api/process` (see [SECURITY.md](./docs/SECURITY.md)).
 
 ## Tech stack
 
@@ -60,6 +60,7 @@ Use **Beispiel laden** in the UI or see [docs/example-prompt.md](./docs/example-
 | [docs/DEPLOY.md](./docs/DEPLOY.md) | Maintainers (Render, env vars) |
 | [docs/example-prompt.md](./docs/example-prompt.md) | Sample process text |
 | [docs/graph-verification.md](./docs/graph-verification.md) | Diagram quality checks |
+| [docs/SECURITY.md](./docs/SECURITY.md) | Abuse prevention & OpenAI limits |
 
 ## API (summary)
 

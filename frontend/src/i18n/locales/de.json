@@ -16,7 +16,9 @@
     "generating": "Erstelle…"
   },
   "errors": {
-    "generateFailed": "Diagramm konnte nicht erstellt werden."
+    "generateFailed": "Diagramm konnte nicht erstellt werden.",
+    "rateLimited": "Zu viele Anfragen — bitte kurz warten und erneut versuchen.",
+    "promptRejected": "Die Beschreibung enthält nicht erlaubte Anweisungen. Bitte nur den Geschäftsprozess beschreiben."
   },
   "graphCheck": {
     "title": "Graph-Check",
